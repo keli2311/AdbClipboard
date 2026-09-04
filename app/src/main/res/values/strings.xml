@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">ADB Clipboard</string>
+    <string name="explanation">AdbClipboard - Secure Clipboard Sync for Developers
+\n
+\nThis app pushes your PC clipboard to your Android device using ADB - no external servers required.
+\n
+\n🔄 Automatic sync: PC → Android (via Python script)
+\n🖱️ Paste on Android: tap the floating paste button to paste into the focused app
+\n
+\n📋 Full setup guide &amp; downloads:
+\ngithub.com/PRosenb/AdbClipboard
+\n
+\n⚡ Quick start:
+\n1. Visit the GitHub repository above
+\n2. Download and run the Python script
+\n3. Enable "Display over other apps" permission
+\n4. Start syncing!
+\n
+\n💡 TIP: No need to keep this screen open. The app runs in the background and shows a floating window.
+\n
+\nPerfect for developers in restricted environments where external clipboard services are blocked.
+\n
+\n🔧 Buttons explained:
+\n• "Enable overlay permission" - Appears if permission not yet granted. Tap to open Android settings, then find AdbClipboard in the list and toggle the permission on.
+\n• "Paste button" - Taps the floating paste icon to paste the Android clipboard into the currently focused app (requires the PC script to be running).
+\n• "Hide info" - Closes this screen but keeps the floating window active
+\n• "Exit app" - Completely closes AdbClipboard including the floating window</string>
+    <string name="request_permission">Enable overlay permission</string>
+    <string name="close_app">Exit app</string>
+    <string name="close_window">Hide info</string>
+    <string name="paste">Paste</string>
+    <string name="paste_requested">Paste requested - syncing via PC</string>
+    <string name="paste_request_failed">Could not request paste</string>
+</resources>
