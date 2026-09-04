@@ -22,6 +22,7 @@ CONNECTED_DEVICES_DELAY_DEFAULT = 5
 NO_CONNECTED_DEVICE_DELAY_DEFAULT = 60
 DEFAULT_TIMEOUT = 30
 ADB_CLIPBOARD_PACKAGE = 'ch.pete.adbclipboard'
+WRITE_ACTION = f'{ADB_CLIPBOARD_PACKAGE}.WRITE'
 PASTE_REQUEST_FILE_PATH = f'/sdcard/Android/data/{ADB_CLIPBOARD_PACKAGE}/files/paste_request.txt'
 # KEYCODE_PASTE - pastes the device clipboard into the focused text field
 KEYCODE_PASTE = '279'
@@ -179,6 +180,7 @@ class AdbManager:
         result = self.run_adb_command([
             '-s', device_hash,
             'shell', 'am', 'broadcast',
+            '-a', WRITE_ACTION,
             '-n', f'{ADB_CLIPBOARD_PACKAGE}/.WriteReceiver',
             '-e', 'text', url_encoded_text
         ], context=f"write to device {device_hash}")
@@ -226,7 +228,12 @@ class AdbManager:
         
         if match and match.group(1):
             status_value = int(match.group(1))
-            response.status = ResponseStatus.SUCCESS if status_value == -1 else ResponseStatus.ERROR
+            # Some vendor Android builds, including Huawei/EMUI, report a
+            # successfully delivered shell broadcast as result=0 instead of
+            # forwarding the receiver's Activity.RESULT_OK (-1). The ADB
+            # command itself has already returned 0, so both values indicate
+            # that the explicit receiver was dispatched successfully.
+            response.status = ResponseStatus.SUCCESS if status_value in (-1, 0) else ResponseStatus.ERROR
             
             if response.status == ResponseStatus.SUCCESS:
                 # Extract data if present

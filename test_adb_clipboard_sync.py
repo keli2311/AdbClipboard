@@ -272,6 +272,7 @@ class TestAdbManager(unittest.TestCase):
         self.assertEqual(response.status, ResponseStatus.SUCCESS)
         expected_cmd = [
             'adb', '-s', 'device123', 'shell', 'am', 'broadcast',
+            '-a', 'ch.pete.adbclipboard.WRITE',
             '-n', 'ch.pete.adbclipboard/.WriteReceiver',
             '-e', 'text', 'test+text'
         ]
@@ -360,6 +361,12 @@ class TestAdbManager(unittest.TestCase):
         # Then
         self.assertEqual(response.status, ResponseStatus.SUCCESS)
         self.assertEqual(response.data, "response data")
+
+    def test_parse_broadcast_response_huawei_success(self):
+        """Huawei/EMUI may return result=0 for a delivered broadcast"""
+        response_text = "Broadcasting: Intent { ... }\nBroadcast completed: result=0"
+        response = self.adb_manager._parse_broadcast_response(response_text)
+        self.assertEqual(response.status, ResponseStatus.SUCCESS)
     
     def test_parse_broadcast_response_error(self):
         """Test parsing error broadcast response"""
